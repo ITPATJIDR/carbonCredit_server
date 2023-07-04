@@ -1,7 +1,7 @@
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 const murmurhash3_x86_32 = require("number-generator/lib/murmurhash3_x86_32");
-const client = require('./database')
+const connecting = require('./database')
 const _ = require("lodash")
 
 
@@ -26,15 +26,15 @@ const jwtRefreshToken = (user) => {
 const refreshTokenVerify = async (token) => {
 	try {
 		const verifyToken = jwt.verify(token, process.env.REFRESH_TOKEN);
-		const checkUser_sql = "SELECT * FROM users WHERE id = $1";
+		const checkUser_sql = "SELECT * FROM users WHERE id = ?";
 		const checkUser_data = [verifyToken.id];
 
 		const checkStatus = await new Promise((resolve, reject) => {
-			client.query(checkUser_sql, checkUser_data, (err, result) => {
+			connecting.query(checkUser_sql, checkUser_data, (err, result) => {
 				if (err) {
 					reject(err);
 				} else {
-					resolve(!_.isEmpty(result.rows));
+					resolve(!_.isEmpty(result[0]));
 				}
 			});
 		});

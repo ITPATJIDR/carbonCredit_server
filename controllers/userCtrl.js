@@ -7,25 +7,29 @@ const userCtrl = {
 	register: async (req, res, next) => {
 		try {
 			const { email, name, surname, password } = req.body;
-			const checkUsernameSql = 'SELECT * FROM users WHERE email = ?';
-			const checkUsernameData = [email];
+			if (email && name && surname && password) {
+				const checkUsernameSql = 'SELECT * FROM users WHERE email = ?';
+				const checkUsernameData = [email];
 
-			await connecting.query(checkUsernameSql, checkUsernameData, async (err,result) => {
-				if(err) {
-					res.status(400).json({ status: 400, message: "Username already exists" });
-				}
-				if (!_.isEmpty(result[0])) {
-					res.status(400).json({ status: 400, message: "Username already exists" });
-				} else {
-					const newPassword = await hashPassword(password);
-					const insertSql = 'INSERT INTO users (email, name, surname, password) VALUES (?, ?, ?, ?)';
-					const insertData = [email, name, surname, newPassword];
+				await connecting.query(checkUsernameSql, checkUsernameData, async (err, result) => {
+					if (err) {
+						res.status(400).json({ status: 400, message: "Email already exists" });
+					}
+					if (!_.isEmpty(result[0])) {
+						res.status(400).json({ status: 400, message: "Email already exists" });
+					} else {
+						const newPassword = await hashPassword(password);
+						const insertSql = 'INSERT INTO users (email, name, surname, password) VALUES (?, ?, ?, ?)';
+						const insertData = [email, name, surname, newPassword];
 
-					await connecting.query(insertSql, insertData);
+						await connecting.query(insertSql, insertData);
 
-					res.status(200).json({ status: 200, message: "Registration successful" });
-				}
-			});
+						res.status(200).json({ status: 200, message: "Registration successful" });
+					}
+				});
+			}else{
+				res.status(400).json({ status: 400, message: "Please fill form Register" });
+			}
 		} catch (err) {
 			console.error(err);
 			res.status(500).json({ status: 500, message: "Internal server error" });
@@ -51,6 +55,8 @@ const userCtrl = {
 								path: "/user/getRefreshToken",
 								maxAge: 8 * 24 * 60 * 60 * 1000, // 7 days
 								httpOnly: true,
+								secure: true, 
+								sameSite: "none" 
 							})
 							res.status(201).json({ status: 200, message: "Login Success" })
 						} else {
