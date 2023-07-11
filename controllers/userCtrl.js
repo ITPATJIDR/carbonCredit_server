@@ -78,6 +78,7 @@ const userCtrl = {
 			res.clearCookie("refreshtoken", { path: "/user/getRefreshToken" })
 			res.status(200).json({ status: 200, message: "Logout" })
 		} catch (err) {
+			console.log(err)
 			res.status(200).json({ status: 500, message: "Internal server error" })
 		}
 	},
@@ -87,7 +88,6 @@ const userCtrl = {
 			if (refreshtoken) {
 				if (await refreshTokenVerify(refreshtoken)) {
 					const { name, surname, compensate_CC, growth_a_tree } = await refreshTokenVerify(refreshtoken) 
-					console.log()
 					res.status(200).json({ status: 200, refreshtoken: refreshtoken, data:{ name, surname, compensate_CC, growth_a_tree }})
 				} else {
 					res.status(200).json({ status: 403, message: "Please Login" })
