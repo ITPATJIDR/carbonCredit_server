@@ -20,6 +20,7 @@ app.use(fileUpload({
 
 
 app.use("/user",require("./routers/userRouter"))
+app.use("/carbon",require("./routers/carbonCalculateRouter"))
 
 app.use("/certificates", express.static("certificates"))
 app.use("/uploads", express.static("uploads"))
