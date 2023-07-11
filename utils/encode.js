@@ -34,7 +34,7 @@ const refreshTokenVerify = async (token) => {
 				if (err) {
 					reject(err);
 				} else {
-					resolve(!_.isEmpty(result[0]));
+					resolve(result[0]);
 				}
 			});
 		});

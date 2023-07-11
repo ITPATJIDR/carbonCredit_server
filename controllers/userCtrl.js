@@ -49,6 +49,7 @@ const userCtrl = {
 					} else {
 						const hashPassword = await result[0].password
 						const checkPassword = await comparePassword(password, hashPassword)
+						const { name, surname, compensate_CC, growth_a_tree } = result[0]
 						if (checkPassword) {
 							const refreshtoken = await jwtRefreshToken(result[0])
 							res.cookie("refreshtoken", refreshtoken, {
@@ -58,7 +59,9 @@ const userCtrl = {
 								secure: true, 
 								sameSite: "none" 
 							})
-							res.status(201).json({ status: 200, message: "Login Success" })
+							res.status(201).json({ status: 200, data: {
+								name, surname, compensate_CC, growth_a_tree
+							}})
 						} else {
 							res.status(201).json({ status: 400, message: "username or password is incorrect" })
 						}
@@ -83,7 +86,9 @@ const userCtrl = {
 			const refreshtoken = req.cookies["refreshtoken"]
 			if (refreshtoken) {
 				if (await refreshTokenVerify(refreshtoken)) {
-					res.status(200).json({ status: 200, refreshtoken: refreshtoken })
+					const { name, surname, compensate_CC, growth_a_tree } = await refreshTokenVerify(refreshtoken) 
+					console.log()
+					res.status(200).json({ status: 200, refreshtoken: refreshtoken, data:{ name, surname, compensate_CC, growth_a_tree }})
 				} else {
 					res.status(200).json({ status: 403, message: "Please Login" })
 				}
