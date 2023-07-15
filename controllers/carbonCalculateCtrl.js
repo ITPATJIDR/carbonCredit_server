@@ -72,12 +72,41 @@ const CarbonCalculate = {
 			res.status(200).json({ status: 200, vehicleData });
 		} catch (err) {
 			console.log(err);
-			res
-				.status(500)
-				.json({ status: 500, message: "Internal Server Error" });
+			res.status(200).json({ status: 500, message: "Internal Server Error" });
+		}
+	},
+	calculateVehicle: async ( req,res) => {
+		try{
+			const { distance_value, vehicle_model_id } = req.body
+			const getVehicleModel = await axios.get(`https://www.carboninterface.com/api/v1/vehicle_makes/${vehicle_model_id}/vehicle_models`,
+				{
+					headers: {
+						Authorization: `Bearer ${process.env.CC_KEY}`,
+						"Content-Type": "application/json",
+					},
+				}
+			)
+			const vehicleId = getVehicleModel.data[0].data.id
+			
+			const resultCal = await axios.post("https://www.carboninterface.com/api/v1/estimates",
+				{
+					"type": "vehicle",
+					"distance_unit": "km",
+					"distance_value": distance_value,
+					"vehicle_model_id": vehicleId
+				},
+				{
+					headers: {
+						Authorization: `Bearer ${process.env.CC_KEY}`,
+						"Content-Type": "application/json",
+					},
+				})
+			res.status(200).json({ status: 200, data: resultCal.data});
+		}catch(err){
+			console.log(err)
+			res.status(200).json({ status: 500, message: "Internal Server Error" });
 		}
 	}
-
 }
 
 module.exports = CarbonCalculate

@@ -5,5 +5,6 @@ Router.post("/addCarbonFood",CarbonCalculate.addCarbonFood)
 Router.get("/getAllCarbonFoodList",CarbonCalculate.getAllCarbonFoodList)
 Router.post("/authAPI",CarbonCalculate.authCarbonInterfaceApi)
 Router.get("/getVehicle",CarbonCalculate.getVehicle)
+Router.post("/calVehicle",CarbonCalculate.calculateVehicle)
 
 module.exports = Router
