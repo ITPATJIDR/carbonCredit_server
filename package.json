@@ -24,6 +24,7 @@
     "nodemon": "^2.0.22",
     "number-generator": "^4.0.6",
     "pdf-creator-node": "^2.3.5",
+    "pdfmake": "^0.2.7",
     "qrcode": "^1.5.3",
     "swagger-jsdoc": "^6.2.8",
     "swagger-ui-express": "^4.6.3"
