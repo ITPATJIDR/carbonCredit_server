@@ -49,7 +49,7 @@ const userCtrl = {
 					} else {
 						const hashPassword = await result[0].password
 						const checkPassword = await comparePassword(password, hashPassword)
-						const { name, surname, compensate_CC, growth_a_tree, id } = result[0]
+						const { name, surname, compensate_CC, growth_a_tree, id, coin, email } = result[0]
 						if (checkPassword) {
 							const refreshtoken = await jwtRefreshToken(result[0])
 							res.cookie("refreshtoken", refreshtoken, {
@@ -66,7 +66,7 @@ const userCtrl = {
 									res.status(200).json({ status: 400, message: "username or password is incorrect" })
 								} else {
 									res.status(201).json({
-										status: 200, data: { name, surname, compensate_CC, growth_a_tree, id , certificateLists }
+										status: 200, data: { name, surname, compensate_CC, growth_a_tree, id , certificateLists, coin, email }
 									})
 								}
 							})
@@ -95,14 +95,14 @@ const userCtrl = {
 			const refreshtoken = req.cookies["refreshtoken"]
 			if (refreshtoken) {
 				if (await refreshTokenVerify(refreshtoken)) {
-					const { name, surname, compensate_CC, growth_a_tree, id } = await refreshTokenVerify(refreshtoken) 
+					const { name, surname, compensate_CC, growth_a_tree, id, coin, email } = await refreshTokenVerify(refreshtoken) 
 					const getAllCertificates_sql = "SELECT certificate_list.cert_path FROM certificate_list  INNER JOIN users ON certificate_list.userId = users.id WHERE users.id = ? "
 					const getAllCertificates_data = [id]
 					await connecting.query(getAllCertificates_sql, getAllCertificates_data, (err,certificateLists) => {
 						if(err) {
 							res.status(200).json({ status: 400, message:"Please Login"})
 						}else{
-							res.status(200).json({ status: 200, refreshtoken: refreshtoken, data:{ name, surname, compensate_CC, growth_a_tree, id, certificateLists }})
+							res.status(200).json({ status: 200, refreshtoken: refreshtoken, data:{ name, surname, compensate_CC, growth_a_tree, id, certificateLists, coin, email }})
 						}
 					})
 				} else {
@@ -113,6 +113,23 @@ const userCtrl = {
 			}
 		} catch (err) {
 			console.log(err)
+			res.status(200).json({ status: 500, message: "Internal server error" })
+		}
+	},
+	updateProfile: async (req,res) => {
+		try{
+			const {name, surname, email, id} = req.body
+			const newProfile_sql = "UPDATE users SET ? WHERE id = ?"  
+			const newProfile = {name:name, surname:surname, email:email}
+			const newProfile_data =[ newProfile, id]
+			await connecting.query(newProfile_sql, newProfile_data, (err,result) => {
+				if(err){
+					res.status(200).json({ status: 400, message: "Update Failed" })
+				}else{
+					res.status(200).json({ status: 200, message: "Update Success" })
+				}
+			})
+		}catch(err){
 			res.status(200).json({ status: 500, message: "Internal server error" })
 		}
 	}

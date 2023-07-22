@@ -132,13 +132,15 @@ const CarbonCalculate = {
 				if(err){
 					res.status(200).json({ status: 400, message: "Purchase Failed" });
 				}else{
-					const {compensate_CC, growth_a_tree, name, surname} = result[0]
+					const {compensate_CC, growth_a_tree, name, surname, coin} = result[0]
 					const fullname = name + " " + surname
 					const new_compensate_CC = Math.ceil(Number(compensate_CC) + Math.ceil(offset / 15))
 					const new_growth_a_tree = Math.ceil(Number(growth_a_tree) + Math.ceil(offset / 15))
+					const new_coin = Number(coin) + offset
 					const newData = {
 						compensate_CC: new_compensate_CC,
-						growth_a_tree: new_growth_a_tree
+						growth_a_tree: new_growth_a_tree,
+						coin : new_coin
 					}
 					const updatePurchase_sql = "UPDATE users SET ? WHERE id = ?"
 					const updatePurchase_data = [newData, id]
