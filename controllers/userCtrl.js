@@ -49,7 +49,7 @@ const userCtrl = {
 					} else {
 						const hashPassword = await result[0].password
 						const checkPassword = await comparePassword(password, hashPassword)
-						const { name, surname, compensate_CC, growth_a_tree, id } = result[0]
+						const { name, surname, compensate_CC, growth_a_tree } = result[0]
 						if (checkPassword) {
 							const refreshtoken = await jwtRefreshToken(result[0])
 							res.cookie("refreshtoken", refreshtoken, {
@@ -59,17 +59,9 @@ const userCtrl = {
 								secure: true, 
 								sameSite: "none" 
 							})
-							const getAllCertificates_sql = "SELECT certificate_list.cert_path FROM certificate_list  INNER JOIN users ON certificate_list.userId = users.id WHERE users.id = ? "
-							const getAllCertificates_data = [id]
-							await connecting.query(getAllCertificates_sql, getAllCertificates_data, (err, certificateLists) => {
-								if (err) {
-									res.status(200).json({ status: 400, message: "username or password is incorrect" })
-								} else {
-									res.status(201).json({
-										status: 200, data: { name, surname, compensate_CC, growth_a_tree, id , certificateLists }
-									})
-								}
-							})
+							res.status(201).json({ status: 200, data: {
+								name, surname, compensate_CC, growth_a_tree
+							}})
 						} else {
 							res.status(201).json({ status: 400, message: "username or password is incorrect" })
 						}
@@ -95,16 +87,8 @@ const userCtrl = {
 			const refreshtoken = req.cookies["refreshtoken"]
 			if (refreshtoken) {
 				if (await refreshTokenVerify(refreshtoken)) {
-					const { name, surname, compensate_CC, growth_a_tree, id } = await refreshTokenVerify(refreshtoken) 
-					const getAllCertificates_sql = "SELECT certificate_list.cert_path FROM certificate_list  INNER JOIN users ON certificate_list.userId = users.id WHERE users.id = ? "
-					const getAllCertificates_data = [id]
-					await connecting.query(getAllCertificates_sql, getAllCertificates_data, (err,certificateLists) => {
-						if(err) {
-							res.status(200).json({ status: 400, message:"Please Login"})
-						}else{
-							res.status(200).json({ status: 200, refreshtoken: refreshtoken, data:{ name, surname, compensate_CC, growth_a_tree, id, certificateLists }})
-						}
-					})
+					const { name, surname, compensate_CC, growth_a_tree } = await refreshTokenVerify(refreshtoken) 
+					res.status(200).json({ status: 200, refreshtoken: refreshtoken, data:{ name, surname, compensate_CC, growth_a_tree }})
 				} else {
 					res.status(200).json({ status: 403, message: "Please Login" })
 				}
