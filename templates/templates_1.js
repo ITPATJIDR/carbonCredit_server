@@ -11,8 +11,8 @@ const Template_1 = (name, offset) => {
 			}
 		],
 		content: [
-			{ text: name, fontSize: 24, margin: [445, 250, 100, 0] },
-			{ text: offset, fontSize: 24, margin: [445, 100, 100, 0] },
+			{ text: name, fontSize: 24, font: "Anastasia", color:"#c79c47", margin: [430, 250, 100, 0] },
+			{ text: `${offset} Kg of CO2e Emissions`,font:"Poppins", fontSize: 13, margin: [435, 40, 100, 0] },
 		],
 		defaultStyle: {
 			font: 'Roboto'

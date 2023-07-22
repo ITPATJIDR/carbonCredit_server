@@ -127,6 +127,13 @@ const CarbonCalculate = {
 				Roboto: {
 					normal: 'assets/fonts/Roboto-Regular.ttf',
 				},
+				Anastasia:{
+					normal: "assets/fonts/Anastasia.ttf"
+				},
+				Poppins:{
+					normal: "assets/fonts/Poppins-Thin.ttf"
+				}
+				
 			}
 			await connection.query(getUser_sql, getUser_data, async (err, result) => {
 				if(err){
