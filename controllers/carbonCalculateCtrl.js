@@ -113,7 +113,10 @@ const CarbonCalculate = {
 	},
 	calculateFood: async (req,res) =>{
 		try{
-				
+			const { food_amt, food_carbon } = req.body
+			total = food_amt * food_carbon
+			
+			res.status(200).json({ status: 200, data: total});
 		}catch(err){
 			res.status(200).json({ status: 500, message: "Internal Server Error" });
 		}
@@ -174,7 +177,6 @@ const CarbonCalculate = {
 						}
 					})
 					
-
 				}
 			})
 		}catch(err){
