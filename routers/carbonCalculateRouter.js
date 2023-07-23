@@ -8,5 +8,6 @@ Router.get("/getVehicle",CarbonCalculate.getVehicle)
 Router.post("/calVehicle",CarbonCalculate.calculateVehicle)
 Router.post("/purchase",CarbonCalculate.purchaseOffset)
 Router.post("/downloadCertificate", CarbonCalculate.downloadCertificate)
+Router.post("/publicCalVehicle", CarbonCalculate.publicCalculateVehicle)
 
 module.exports = Router

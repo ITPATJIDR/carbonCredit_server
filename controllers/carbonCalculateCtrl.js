@@ -3,7 +3,7 @@ const connection = require('../utils/database')
 const axios = require("axios")
 const fs = require('fs');
 const pdfMake = require('pdfmake');
-const { genNumber } = require('../utils/encode');
+const { genNumber, refreshTokenVerify } = require('../utils/encode');
 
 const headers = {
 	Authorization: `Bearer ${process.env.CC_KEY}`
@@ -193,7 +193,45 @@ const CarbonCalculate = {
 		}catch(err){
 			res.status(200).json({ status: 500, message: "Internal Server Error" });
 		}
-	}
+	},
+	publicCalculateVehicle: async ( req,res) => {
+		try{
+			const { distance_value, vehicle_model_id, api_key } = req.body
+
+			if(await refreshTokenVerify(api_key)){
+				const getVehicleModel = await axios.get(`https://www.carboninterface.com/api/v1/vehicle_makes/${vehicle_model_id}/vehicle_models`,
+					{
+						headers: {
+							Authorization: `Bearer ${process.env.CC_KEY}`,
+							"Content-Type": "application/json",
+						},
+					}
+				)
+				const vehicleId = getVehicleModel.data[0].data.id
+
+				const resultCal = await axios.post("https://www.carboninterface.com/api/v1/estimates",
+					{
+						"type": "vehicle",
+						"distance_unit": "km",
+						"distance_value": distance_value,
+						"vehicle_model_id": vehicleId
+					},
+					{
+						headers: {
+							Authorization: `Bearer ${process.env.CC_KEY}`,
+							"Content-Type": "application/json",
+						},
+					})
+
+				res.status(200).json({ status: 200, data: resultCal.data });
+			}else{
+				res.status(200).json({ status: 403, message: "Invaild Api Key" });
+			}
+		}catch(err){
+			console.log(err)
+			res.status(200).json({ status: 500, message: "Internal Server Error" });
+		}
+	},
 }
 
 module.exports = CarbonCalculate

@@ -1,64 +1,66 @@
 {
-  "openapi": "3.0.0",
+  "swagger": "2.0",
   "info": {
     "version": "1.0.0",
-    "title": "Sample API",
-    "description": "A sample API with Swagger"
+    "title": "Calculate Vehicle API",
+    "description": "API to calculate vehicle carbon emissions."
   },
+  "basePath": "/",
+  "schemes": [
+    "http",
+    "https"
+  ],
   "paths": {
-    "/carbon-food": {
+    "/publicCalVehicle": {
       "post": {
-        "summary": "Add carbon food",
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "name": {
-                    "type": "string"
-                  },
-                  "amount": {
-                    "type": "number"
-                  }
+        "summary": "Calculate vehicle carbon emissions.",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Input parameters for calculating vehicle emissions.",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "distance_value": {
+                  "type": "number",
+                  "description": "Distance traveled by the vehicle (in km).",
+                  "example": 100
                 },
-                "required": ["name", "amount"]
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "status": {
-                      "type": "number"
-                    },
-                    "message": {
-                      "type": "string"
-                    }
-                  }
+                "vehicle_model_id": {
+                  "type": "string",
+                  "description": "ID of the vehicle model used for emissions calculation.",
+                  "example": "1234567890"
+                },
+                "ApiKey": {
+                  "type": "string",
+                  "description": "Apikey that you get from our website",
+                  "example": "cinm1oidm;okac23oa;84j01293dj2i3jceowir"
                 }
               }
             }
-          },
-          "400": {
-            "description": "Something wrong",
-            "content": {
-              "application/json": {
-                "schema": {
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response with calculated emissions data.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "type": "number",
+                  "description": "Status code (200 for success).",
+                  "example": 200
+                },
+                "data": {
                   "type": "object",
+                  "description": "Calculated emissions data.",
                   "properties": {
-                    "status": {
-                      "type": "number"
-                    },
-                    "message": {
-                      "type": "string"
+                    "estimated_kilograms_of_co2e": {
+                      "type": "number",
+                      "description": "Estimated kilograms of CO2e emissions.",
+                      "example": 50.23
                     }
                   }
                 }
@@ -66,24 +68,30 @@
             }
           },
           "500": {
-            "description": "Internal Server Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "status": {
-                      "type": "number"
-                    },
-                    "message": {
-                      "type": "string"
-                    }
-                  }
+            "description": "Internal Server Error.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "type": "number",
+                  "description": "Status code (500 for Internal Server Error).",
+                  "example": 500
+                },
+                "message": {
+                  "type": "string",
+                  "description": "Error message indicating Internal Server Error.",
+                  "example": "Internal Server Error"
                 }
               }
             }
           }
-        }
+        },
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ]
       }
     }
   }

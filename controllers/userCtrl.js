@@ -102,7 +102,7 @@ const userCtrl = {
 						if(err) {
 							res.status(200).json({ status: 400, message:"Please Login"})
 						}else{
-							res.status(200).json({ status: 200, refreshtoken: refreshtoken, data:{ name, surname, compensate_CC, growth_a_tree, id, certificateLists, coin, email }})
+							res.status(200).json({ status: 200, data: { name, surname, compensate_CC, growth_a_tree, id, certificateLists, coin, email, refreshtoken } })
 						}
 					})
 				} else {
