@@ -234,6 +234,15 @@ const CarbonCalculate = {
 			res.status(200).json({ status: 500, message: "Internal Server Error" });
 		}
 	},
+	publicCalculateFood: async (req,res) =>{
+		try{
+			const { food_amt, food_carbon } = req.body
+			const total = food_amt * food_carbon
+			res.status(200).json({ status: 200, data: total});
+		}catch(err){
+			res.status(200).json({ status: 500, message: "Internal Server Error" });
+		}
+	},
 }
 
 module.exports = CarbonCalculate
