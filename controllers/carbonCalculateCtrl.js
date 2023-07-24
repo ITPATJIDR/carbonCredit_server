@@ -114,7 +114,7 @@ const CarbonCalculate = {
 	calculateFood: async (req,res) =>{
 		try{
 			const { food_amt, food_carbon } = req.body
-			total = food_amt * food_carbon
+			const total = food_amt * food_carbon
 			
 			res.status(200).json({ status: 200, data: total});
 		}catch(err){
