@@ -236,13 +236,63 @@ const CarbonCalculate = {
 	},
 	publicCalculateFood: async (req,res) =>{
 		try{
-			const { food_amt, food_carbon } = req.body
-			const total = food_amt * food_carbon
-			res.status(200).json({ status: 200, data: total});
+			const { food_amt, food_carbon, api_key } = req.body
+			if(await refreshTokenVerify(api_key)){
+				const total = food_amt * food_carbon
+				res.status(200).json({ status: 200, data: total});
+			}else{
+				res.status(200).json({ status: 403, message:"Invalid Api Key" });
+			}
 		}catch(err){
 			res.status(200).json({ status: 500, message: "Internal Server Error" });
 		}
 	},
+	publicGetAllCarbonFoodList: async (req, res) => {
+		try {
+			const { api_key } = req.body
+			if(await refreshTokenVerify(api_key)){
+				const getAllCarbonFoodList_sql = "SELECT * FROM cc_list"
+				await connection.query(getAllCarbonFoodList_sql, (err, result) => {
+					if (err) {
+						console.log(err)
+						res.status(200).json({ status: 400, message: "Something wrong" })
+					} else {
+						res.status(200).json({ status: 400, result: result })
+					}
+				})
+			}else{
+				res.status(200).json({ status: 403, message:"Invalid Api Key" });
+			}
+		} catch (err) {
+			res.status(200).json({ status: 500, message: "Internal Server Error" })
+		}
+	},
+	publicGetVehicle: async (req, res) => {
+		try {
+			const { api_key } = req.body
+			if(await refreshTokenVerify(api_key)){
+				const response = await axios.get(
+					"https://www.carboninterface.com/api/v1/vehicle_makes",
+					{
+						headers: {
+							Authorization: `Bearer ${process.env.CC_KEY}`,
+							"Content-Type": "application/json",
+						},
+					}
+				);
+
+				const vehicleData = response.data;
+
+				res.status(200).json({ status: 200, vehicleData });
+			}else{
+				res.status(200).json({ status: 403, message:"Invalid Api Key" });
+			}
+		} catch (err) {
+			console.log(err);
+			res.status(200).json({ status: 500, message: "Internal Server Error" });
+		}
+	},
+
 }
 
 module.exports = CarbonCalculate
