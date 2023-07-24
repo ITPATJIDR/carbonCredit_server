@@ -77,11 +77,37 @@ const genNumber = () => {
 	return murmurhash3_x86_32(String(new Date()))
 }
 
+
+const convertCoinToTree = (coin) => {
+	if (coin >= 1 && coin < 49) {
+		return 1
+	} else if (coin >= 50 && coin < 65) {
+		return 2
+	} else if (coin >= 66 && coin < 91) {
+		return 3
+	} else if (coin >= 92 && coin < 120) {
+		return 4
+	} else if (coin >= 121 && coin < 151) {
+		return 5
+	} else if (coin >= 152 && coin < 182) {
+		return 6
+	} else if (coin >= 183 && coin < 200) {
+		return 7
+	} else if (coin >= 201 && coin < 250) {
+		return 8
+	} else if (coin >= 251 && coin < 329) {
+		return 9
+	} else if (coin > 330) {
+		return 10
+	}
+};
+
 module.exports = {
 	jwtGenerate,
 	jwtRefreshToken,
 	hashPassword,
 	comparePassword,
 	genNumber,
-	refreshTokenVerify
+	refreshTokenVerify,
+	convertCoinToTree
 }

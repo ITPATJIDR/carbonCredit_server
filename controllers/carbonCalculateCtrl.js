@@ -3,7 +3,7 @@ const connection = require('../utils/database')
 const axios = require("axios")
 const fs = require('fs');
 const pdfMake = require('pdfmake');
-const { genNumber, refreshTokenVerify } = require('../utils/encode');
+const { genNumber, refreshTokenVerify, convertCoinToTree } = require('../utils/encode');
 
 const headers = {
 	Authorization: `Bearer ${process.env.CC_KEY}`
@@ -147,6 +147,7 @@ const CarbonCalculate = {
 					const new_compensate_CC = Math.ceil(Number(compensate_CC) + Math.ceil(offset / 15))
 					const new_growth_a_tree = Math.ceil(Number(growth_a_tree) + Math.ceil(offset / 15))
 					const new_coin = Number(coin) + offset
+					const new_tree = convertCoinToTree(new_coin)
 					const newData = {
 						compensate_CC: new_compensate_CC,
 						growth_a_tree: new_growth_a_tree,
@@ -158,7 +159,7 @@ const CarbonCalculate = {
 						if (err) {
 							res.status(200).json({ status: 400, message: "Purchase Failed" });
 						} else {
-							const preCreateCertificate = Template_1(fullname, offset)
+							const preCreateCertificate = Template_1(fullname, offset, new_tree)
 							const printer = new pdfMake(fonts)
 							const pdfDoc = printer.createPdfKitDocument(preCreateCertificate)
 							const fileName = await "CC_" + genNumber()
