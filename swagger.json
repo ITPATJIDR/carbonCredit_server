@@ -2,8 +2,8 @@
   "swagger": "2.0",
   "info": {
     "version": "1.0.0",
-    "title": "Calculate Vehicle API",
-    "description": "API to calculate vehicle carbon emissions."
+    "title": "Greenie API",
+    "description": "API to calculate vehicle and food carbon emissions."
   },
   "basePath": "/",
   "schemes": [
