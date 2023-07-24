@@ -2,8 +2,8 @@
   "swagger": "2.0",
   "info": {
     "version": "1.0.0",
-    "title": "Calculate Vehicle API",
-    "description": "API to calculate vehicle carbon emissions."
+    "title": "Greenie API",
+    "description": "API to calculate vehicle and food carbon emissions."
   },
   "basePath": "/",
   "schemes": [
@@ -33,7 +33,7 @@
                   "description": "ID of the vehicle model used for emissions calculation.",
                   "example": "1234567890"
                 },
-                "ApiKey": {
+                "api_key": {
                   "type": "string",
                   "description": "Apikey that you get from our website",
                   "example": "cinm1oidm;okac23oa;84j01293dj2i3jceowir"
@@ -92,6 +92,315 @@
         "produces": [
           "application/json"
         ]
+      }
+    },
+    "/publicCalFood": {
+      "post": {
+        "summary": "Calculate food carbon footprint",
+        "description": "Calculate the total carbon footprint of food based on the given parameters.",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Input parameters for calculating vehicle emissions.",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "food_amt": {
+                  "type": "number",
+                  "description": "Distance traveled by the vehicle (in km).",
+                  "example": 100
+                },
+                "food_carbon": {
+                  "type": "string",
+                  "description": "ID of the vehicle model used for emissions calculation.",
+                  "example": "1234567890"
+                },
+                "api_key": {
+                  "type": "string",
+                  "description": "Apikey that you get from our website",
+                  "example": "cinm1oidm;okac23oa;84j01293dj2i3jceowir"
+                }
+              }
+            }
+          }
+
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "integer",
+                      "format": "int32",
+                      "example": 200
+                    },
+                    "data": {
+                      "type": "number",
+                      "format": "float",
+                      "example": 123.45
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Invalid API key",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "integer",
+                      "format": "int32",
+                      "example": 403
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Invalid API Key"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "integer",
+                      "format": "int32",
+                      "example": 500
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Internal Server Error"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/publicGetAllCarbinFoodList": {
+      "post": {
+        "summary": "Get all carbon footprint foods",
+        "description": "Retrieve the list of all carbon footprint foods.",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Input parameters for calculating vehicle emissions.",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "api_key": {
+                  "type": "string",
+                  "description": "Apikey that you get from our website",
+                  "example": "cinm1oidm;okac23oa;84j01293dj2i3jceowir"
+                }
+              }
+            }
+          }
+
+
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "integer",
+                      "format": "int32",
+                      "example": 200
+                    },
+                    "result": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "integer",
+                      "format": "int32",
+                      "example": 400
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Something wrong"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Invalid API key",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "integer",
+                      "format": "int32",
+                      "example": 403
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Invalid API Key"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "integer",
+                      "format": "int32",
+                      "example": 500
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Internal Server Error"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/publicGetVehicle": {
+      "post": {
+        "summary": "Get vehicle data",
+        "description": "Retrieve vehicle data from a third-party service.",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Input parameters for calculating vehicle emissions.",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "api_key": {
+                  "type": "string",
+                  "description": "Apikey that you get from our website",
+                  "example": "cinm1oidm;okac23oa;84j01293dj2i3jceowir"
+                }
+              }
+            }
+          }
+
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "integer",
+                      "format": "int32",
+                      "example": 200
+                    },
+                    "vehicleData": {
+                        "make": "Toyota",
+                        "model": "Camry",
+                        "year": 2022
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Invalid API key",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "integer",
+                      "format": "int32",
+                      "example": 403
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Invalid API Key"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "integer",
+                      "format": "int32",
+                      "example": 500
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Internal Server Error"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
       }
     }
   }
