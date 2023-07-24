@@ -114,7 +114,7 @@ const CarbonCalculate = {
 	calculateFood: async (req,res) =>{
 		try{
 			const { food_amt, food_carbon } = req.body
-			total = food_amt * food_carbon
+			total = (food_amt * food_carbon).toFixed(2);
 			
 			res.status(200).json({ status: 200, data: total});
 		}catch(err){
@@ -238,7 +238,7 @@ const CarbonCalculate = {
 		try{
 			const { food_amt, food_carbon, api_key } = req.body
 			if(await refreshTokenVerify(api_key)){
-				const total = food_amt * food_carbon
+				const total = (food_amt * food_carbon).toFixed(2);
 				res.status(200).json({ status: 200, data: total});
 			}else{
 				res.status(200).json({ status: 403, message:"Invalid Api Key" });
