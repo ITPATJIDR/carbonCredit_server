@@ -124,6 +124,7 @@ const CarbonCalculate = {
 	purchaseOffset: async (req,res) =>{
 		try{
 			const { offset, id } = req.body
+			console.log(offset)
 			const getUser_sql = "SELECT * from users WHERE id = ?"
 			const getUser_data = [id]
 			const fonts = {
