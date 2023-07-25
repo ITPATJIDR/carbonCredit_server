@@ -144,22 +144,23 @@ const CarbonCalculate = {
 				}else{
 					const {compensate_CC, growth_a_tree, name, surname, coin} = result[0]
 					const fullname = name + " " + surname
-					const new_compensate_CC = Math.ceil(Number(compensate_CC) + Math.ceil(offset / 15))
-					const new_growth_a_tree = Math.ceil(Number(growth_a_tree) + Math.ceil(offset / 15))
-					const new_coin = Number(coin) + offset
+					const new_compensate_CC = Math.ceil(Number(compensate_CC) + Math.ceil(Number(offset) / 15))
+					const new_growth_a_tree = Math.ceil(Number(growth_a_tree) + Math.ceil(Number(offset) / 15))
+					const new_coin = Math.ceil(Number(coin) + Number(offset))
 					const new_tree = convertCoinToTree(new_coin)
 					const newData = {
 						compensate_CC: new_compensate_CC,
 						growth_a_tree: new_growth_a_tree,
 						coin : new_coin
 					}
+					console.log(newData)
 					const getCCbank_sql = "SELECT * FROM cc_bank WHERE id = 1"
 					await connection.query(getCCbank_sql, async (err , ccBank) => {
 						if(err) {
 							res.status(200).json({ status: 400, message: "Purchase Failed" });
 						}
 						const { cc_main_credit, compensate_CC_main, growth_a_tree_main} = ccBank[0]
-						const new_cc_main_credit = cc_main_credit - offset
+						const new_cc_main_credit = cc_main_credit - Number(offset)
 						const new_compensate_CC_main = compensate_CC_main + new_compensate_CC 
 						const new_growth_a_tree_main = growth_a_tree_main + new_growth_a_tree 
 						const newData_CCbank = {
@@ -182,10 +183,11 @@ const CarbonCalculate = {
 							if (err) {
 								res.status(200).json({ status: 400, message: "Purchase Failed" });
 							} else {
-								const preCreateCertificate = Template_1(fullname, offset, new_tree)
+								const preCreateCertificate = Template_1(fullname, Number(offset), new_tree)
 								const printer = new pdfMake(fonts)
 								const pdfDoc = printer.createPdfKitDocument(preCreateCertificate)
 								const fileName = await "CC_" + genNumber()
+								console.log(fileName)
 								const filePath = `certificates/${fileName}.pdf`
 								const writeStream = fs.createWriteStream(filePath);
 								const createCertificate_sql = "INSERT INTO certificate_list (userId, cert_path) VALUES (?, ?) "
