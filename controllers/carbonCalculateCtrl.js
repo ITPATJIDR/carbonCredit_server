@@ -153,31 +153,69 @@ const CarbonCalculate = {
 						growth_a_tree: new_growth_a_tree,
 						coin : new_coin
 					}
-					const updatePurchase_sql = "UPDATE users SET ? WHERE id = ?"
-					const updatePurchase_data = [newData, id]
-					await connection.query(updatePurchase_sql, updatePurchase_data, async (err, result) => {
-						if (err) {
+					const getCCbank_sql = "SELECT * FROM cc_bank WHERE id = 1"
+					await connection.query(getCCbank_sql, async (err , ccBank) => {
+						if(err) {
 							res.status(200).json({ status: 400, message: "Purchase Failed" });
-						} else {
-							const preCreateCertificate = Template_1(fullname, offset, new_tree)
-							const printer = new pdfMake(fonts)
-							const pdfDoc = printer.createPdfKitDocument(preCreateCertificate)
-							const fileName = await "CC_" + genNumber()
-							const filePath = `certificates/${fileName}.pdf`
-							const writeStream = fs.createWriteStream(filePath);
-							const createCertificate_sql = "INSERT INTO certificate_list (userId, cert_path) VALUES (?, ?) "
-							const createCertificate_data = [id, filePath]
-							await connection.query(createCertificate_sql, createCertificate_data, (err, result) => {
-								if (err) {
-									res.status(200).json({ status: 200, message: "Purchase Success" });
-								}
-							})
-							pdfDoc.pipe(writeStream);
-							pdfDoc.end();
-							res.status(200).json({ status: 200, message: "Purchase Success" });
 						}
+						const { cc_main_credit, compensate_CC_main, growth_a_tree_main} = ccBank[0]
+						const new_cc_main_credit = cc_main_credit - offset
+						const new_compensate_CC_main = compensate_CC_main + new_compensate_CC 
+						const new_growth_a_tree_main = growth_a_tree_main + new_growth_a_tree 
+						const newData_CCbank = {
+							cc_main_credit: new_cc_main_credit,
+							compensate_CC_main: new_compensate_CC_main,
+							growth_a_tree_main: new_growth_a_tree_main
+						}
+
+						const updateCCBank_sql = "UPDATE cc_bank SET ? WHERE id = 1"
+						const updateCCBank_data = [newData_CCbank]
+						await connection.query(updateCCBank_sql,updateCCBank_data,(err) => {
+							if (err) {
+								console.log(err)
+								res.status(200).json({ status: 400, message: "Purchase Failed" });
+							}
+						})
+						const updatePurchase_sql = "UPDATE users SET ? WHERE id = ?"
+						const updatePurchase_data = [newData, id]
+						await connection.query(updatePurchase_sql, updatePurchase_data, async (err, result) => {
+							if (err) {
+								res.status(200).json({ status: 400, message: "Purchase Failed" });
+							} else {
+								const preCreateCertificate = Template_1(fullname, offset, new_tree)
+								const printer = new pdfMake(fonts)
+								const pdfDoc = printer.createPdfKitDocument(preCreateCertificate)
+								const fileName = await "CC_" + genNumber()
+								const filePath = `certificates/${fileName}.pdf`
+								const writeStream = fs.createWriteStream(filePath);
+								const createCertificate_sql = "INSERT INTO certificate_list (userId, cert_path) VALUES (?, ?) "
+								const createCertificate_data = [id, filePath]
+								await connection.query(createCertificate_sql, createCertificate_data, (err, result) => {
+									if (err) {
+										res.status(200).json({ status: 200, message: "Purchase Success" });
+									}
+								})
+								pdfDoc.pipe(writeStream);
+								pdfDoc.end();
+								res.status(200).json({ status: 200, message: "Purchase Success" });
+							}
+						})
 					})
 					
+				}
+			})
+		}catch(err){
+			res.status(200).json({ status: 500, message: "Internal Server Error" });
+		}
+	},
+	getCCbank: async (req,res) =>{
+		try{
+			const getCCbank_sql = "SELECT * FROM cc_bank WHERE id = 1"
+			await connection.query(getCCbank_sql, async (err, ccBank) => {
+				if(err){
+					res.status(200).json({ status: 500, message: "Internal Server Error" });
+				}else{
+					res.status(200).json({ status: 200, data: ccBank});
 				}
 			})
 		}catch(err){
@@ -293,7 +331,25 @@ const CarbonCalculate = {
 			res.status(200).json({ status: 500, message: "Internal Server Error" });
 		}
 	},
-
+	publicGetCCbank: async (req,res) =>{
+		try{
+			const {api_key} = req.body
+			if(await refreshTokenVerify(api_key)){
+				const getCCbank_sql = "SELECT * FROM cc_bank WHERE id = 1"
+				await connection.query(getCCbank_sql, async (err, ccBank) => {
+					if (err) {
+						res.status(200).json({ status: 500, message: "Internal Server Error" });
+					} else {
+						res.status(200).json({ status: 200, data: ccBank });
+					}
+				})
+			}else{
+				res.status(200).json({ status: 403, message: "Invalid Api key" });
+			}
+		}catch(err){
+			res.status(200).json({ status: 500, message: "Internal Server Error" });
+		}
+	},
 }
 
 module.exports = CarbonCalculate

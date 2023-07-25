@@ -402,6 +402,98 @@
           }
         }
       }
+    },
+    "/publicGetCCBank": {
+      "post": {
+        "summary": "Get Carbon Credit Bank data",
+        "description": "Retrieve data from the Carbon Credit Bank.",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Input parameters for calculating vehicle emissions.",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "api_key": {
+                  "type": "string",
+                  "description": "Apikey that you get from our website",
+                  "example": "cinm1oidm;okac23oa;84j01293dj2i3jceowir"
+                }
+              }
+            }
+          }
+
+
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "integer",
+                      "format": "int32",
+                      "example": 200
+                    },
+                    "data": {
+                      "type": "array",
+                      "items": {
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Invalid API key",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "integer",
+                      "format": "int32",
+                      "example": 403
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Invalid API Key"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "integer",
+                      "format": "int32",
+                      "example": 500
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Internal Server Error"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
     }
   }
 }
