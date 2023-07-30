@@ -29,7 +29,7 @@ app.use("/uploads", express.static("uploads"))
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 app.get("/", (req, res) => {
-  res.send("I'm alive...")
+  res.send("I'm Greenie...")
 })
 
 app.listen(PORT, (req, res) => {
