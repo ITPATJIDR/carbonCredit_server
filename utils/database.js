@@ -2,9 +2,9 @@ const mysql = require('mysql');
 
 // Create a connection
 const connection = mysql.createConnection({
-  host: 'localhost',       
-  user: 'root',    
-  password: '',
+  host: 'carboncredit.mysql.database.azure.com',       
+  user: 'master',    
+  password: 'ITPat2244#',
   database: 'carboncredit' 
 });
 
