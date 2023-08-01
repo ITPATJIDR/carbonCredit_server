@@ -1,0 +1,28 @@
+# Base image
+FROM node:14
+
+# Install Snyk CLI
+RUN npm install -g snyk
+
+# Set working directory
+WORKDIR /app
+
+# Copy your Node.js application code to the container
+COPY . .
+
+# Install Node.js dependencies
+RUN npm install
+
+RUN snyk auth 
+
+# Run Snyk test to check for vulnerabilities
+RUN snyk test
+
+# Run SonarQube Scanner to analyze the code
+RUN sonar-scanner
+
+# The rest of your Dockerfile as needed
+# ...
+
+# Example: Run your Node.js application
+CMD ["node", "app.js"]
