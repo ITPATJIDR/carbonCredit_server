@@ -147,14 +147,12 @@ const CarbonCalculate = {
 					const new_coin = Math.ceil(Number(coin) + Number(offset))
 					const new_compensate_CC = Math.ceil(Number(compensate_CC) + Math.ceil(Number(offset)))
 					const new_growth_a_tree = Math.floor(Number(growth_a_tree) + Math.ceil(Number(offset) / 12))
-					console.log(Number(offset) / 12)
 					const new_tree = convertCoinToTree(new_coin)
 					const newData = {
 						compensate_CC: new_compensate_CC,
 						growth_a_tree: new_growth_a_tree,
 						coin : new_coin
 					}
-					console.log(newData)
 					const getCCbank_sql = "SELECT * FROM cc_bank WHERE id = 1"
 					await connection.query(getCCbank_sql, async (err , ccBank) => {
 						if(err) {
