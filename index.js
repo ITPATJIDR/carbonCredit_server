@@ -11,7 +11,11 @@ const PORT = process.env.PORT || 5001
 
 app.use(express.urlencoded({extended:true}))
 app.use(express.json())
-app.use(cors({origin: ["http://127.0.0.1:5173","http://localhost:5173", "http://localhost:3000","https://greenie-app.azurewebsites.net"],credentials:true}))
+const allowedOrigins = ['http://127.0.0.1:5173', 'http://localhost:5173', 'http://localhost:3000', 'https://greenie-app.azurewebsites.net'];
+app.use(cors({
+  origin: allowedOrigins,
+  credentials: true, // Allow sending cookies with the request
+}));
 app.use(cookieparser())
 app.use(fileUpload({
   createParentPath:true,

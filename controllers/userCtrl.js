@@ -57,6 +57,7 @@ const userCtrl = {
 								maxAge: 8 * 24 * 60 * 60 * 1000, // 7 days
 								httpOnly: true,
 								secure: true, 
+								sameSite: "none" 
 							})
 							const getAllCertificates_sql = "SELECT certificate_list.cert_path FROM certificate_list  INNER JOIN users ON certificate_list.userId = users.id WHERE users.id = ? "
 							const getAllCertificates_data = [id]
