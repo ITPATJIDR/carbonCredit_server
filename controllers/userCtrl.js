@@ -53,7 +53,6 @@ const userCtrl = {
 						if (checkPassword) {
 							const refreshtoken = await jwtRefreshToken(result[0])
 							res.cookie("refreshtoken", refreshtoken, {
-								domain:"greenie-app.azurewebsites.net",
 								path: "/user/getRefreshToken",
 								maxAge: 8 * 24 * 60 * 60 * 1000, // 7 days
 								httpOnly: true,
@@ -86,7 +85,6 @@ const userCtrl = {
 		try {
 			// res.clearCookie("refreshtoken", { path: "/user/getRefreshToken" })
 			res.cookie("refreshtoken", "", {
-				domain:"greenie-app.azurewebsites.net",
 				path: "/user/getRefreshToken",
 				maxAge: 8 * 24 * 60 * 60 * 1000, // 7 days
 				httpOnly: true,
