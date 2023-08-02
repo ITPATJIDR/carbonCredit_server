@@ -165,7 +165,7 @@ const CarbonCalculate = {
 						//cal part
 						const new_cc_main_credit = Math.ceil(cc_main_credit - Number(offset))
 						const new_compensate_CC_main = Math.ceil(compensate_CC_main + Number(offset))
-						const new_growth_a_tree_main = (compensate_CC_main + Number(offset)) / 12
+						const new_growth_a_tree_main = (Number(compensate_CC_main) + Number(offset)) / 12
 
 						const newData_CCbank = {
 							cc_main_credit: new_cc_main_credit,
