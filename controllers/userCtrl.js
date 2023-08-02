@@ -83,7 +83,14 @@ const userCtrl = {
 	},
 	logout: async (req, res, next) => {
 		try {
-			res.clearCookie("refreshtoken", { path: "/user/getRefreshToken" })
+			// res.clearCookie("refreshtoken", { path: "/user/getRefreshToken" })
+			res.cookie("refreshtoken", "", {
+				domain:".azurewebsites.net",
+				path: "/user/getRefreshToken",
+				maxAge: 8 * 24 * 60 * 60 * 1000, // 7 days
+				httpOnly: true,
+				secure: true, 
+			})
 			res.status(200).json({ status: 200, message: "Logout" })
 		} catch (err) {
 			console.log(err)
