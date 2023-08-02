@@ -144,9 +144,11 @@ const CarbonCalculate = {
 				}else{
 					const {compensate_CC, growth_a_tree, name, surname, coin} = result[0]
 					const fullname = name + " " + surname
+					//cal part
 					const new_coin = Math.ceil(Number(coin) + Number(offset))
 					const new_compensate_CC = Math.ceil(Number(compensate_CC) + Number(offset))
-					const new_growth_a_tree = Math.floor(Number(growth_a_tree) + Number(new_compensate_CC) / 12)
+					const new_growth_a_tree = Math.ceil(Number(growth_a_tree) + Number(new_compensate_CC) / 12)
+
 					const new_tree = convertCoinToTree(new_coin)
 					const newData = {
 						compensate_CC: new_compensate_CC,
@@ -159,9 +161,12 @@ const CarbonCalculate = {
 							res.status(200).json({ status: 400, message: "Purchase Failed" });
 						}
 						const { cc_main_credit, compensate_CC_main, growth_a_tree_main} = ccBank[0]
+
+						//cal part
 						const new_cc_main_credit = Math.ceil(cc_main_credit - Number(offset))
 						const new_compensate_CC_main = Math.ceil(compensate_CC_main + Number(offset))
-						const new_growth_a_tree_main = Math.floor(growth_a_tree_main + Number(new_compensate_CC_main) / 12) 
+						const new_growth_a_tree_main = Math.ceil(growth_a_tree_main + Number(new_compensate_CC_main) / 12) 
+
 						const newData_CCbank = {
 							cc_main_credit: new_cc_main_credit,
 							compensate_CC_main: new_compensate_CC_main,
