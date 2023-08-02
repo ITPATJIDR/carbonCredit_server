@@ -146,7 +146,8 @@ const CarbonCalculate = {
 					const fullname = name + " " + surname
 					const new_coin = Math.ceil(Number(coin) + Number(offset))
 					const new_compensate_CC = Math.ceil(Number(compensate_CC) + Math.ceil(Number(offset)))
-					const new_growth_a_tree = Math.floor(Number(growth_a_tree) + Math.floor(Number(offset) / 12))
+					console.log("offset :", offset)
+					const new_growth_a_tree = Math.floor(Number(growth_a_tree) + Number(offset) / 12)
 					const new_tree = convertCoinToTree(new_coin)
 					const newData = {
 						compensate_CC: new_compensate_CC,
@@ -163,7 +164,7 @@ const CarbonCalculate = {
 						console.log("new_coin = ",new_coin)
 						const new_cc_main_credit = cc_main_credit - Number(offset)
 						const new_compensate_CC_main = compensate_CC_main + Math.ceil(Number(offset))
-						const new_growth_a_tree_main = growth_a_tree_main + Math.ceil(Number(offset) / 12) 
+						const new_growth_a_tree_main = Math.floor(growth_a_tree_main + Number(offset) / 12) 
 						const newData_CCbank = {
 							cc_main_credit: new_cc_main_credit,
 							compensate_CC_main: new_compensate_CC_main,
