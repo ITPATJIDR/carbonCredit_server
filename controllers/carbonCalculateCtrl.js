@@ -147,7 +147,7 @@ const CarbonCalculate = {
 					//cal part
 					const new_coin = Math.ceil(Number(coin) + Number(offset))
 					const new_compensate_CC = Math.ceil(Number(compensate_CC) + Number(offset))
-					const new_growth_a_tree = Math.ceil(Number(growth_a_tree) + Number(new_compensate_CC) / 12)
+					const new_growth_a_tree = Number(new_compensate_CC) / 12)
 
 					const new_tree = convertCoinToTree(new_coin)
 					const newData = {
@@ -165,7 +165,7 @@ const CarbonCalculate = {
 						//cal part
 						const new_cc_main_credit = Math.ceil(cc_main_credit - Number(offset))
 						const new_compensate_CC_main = Math.ceil(compensate_CC_main + Number(offset))
-						const new_growth_a_tree_main = Math.ceil(growth_a_tree_main + Number(new_compensate_CC_main) / 12) 
+						const new_growth_a_tree_main = Number(new_compensate_CC_main) / 12
 
 						const newData_CCbank = {
 							cc_main_credit: new_cc_main_credit,
