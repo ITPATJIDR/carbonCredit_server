@@ -13,7 +13,7 @@ const Template_1 = (name, offset, tree) => {
 		content: [
 			{ text: name, fontSize: 30, font: "Anastasia",width:'auto', color:"#c79c47", margin: [350, 220, 100, 0] },
 			{ text: `${offset} Kg of CO2e Emissions`,font:"Poppins", fontSize: 13, margin: [435, 40, 100, 0] },
-			{ qr:`http://localhost:3000/publicprofile/${tree}`, margin: [10, -40, 100, 0]}
+			{ qr:`https://greenie-app.azurewebsites.net/publicprofile/${tree}`, margin: [10, -40, 100, 0]}
 		],
 		defaultStyle: {
 			font: 'Roboto'
