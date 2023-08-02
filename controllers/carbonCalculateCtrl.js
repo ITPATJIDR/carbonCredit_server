@@ -159,7 +159,7 @@ const CarbonCalculate = {
 							res.status(200).json({ status: 400, message: "Purchase Failed" });
 						}
 						const { cc_main_credit, compensate_CC_main, growth_a_tree_main} = ccBank[0]
-						const new_cc_main_credit = cc_main_credit - Number(offset)
+						const new_cc_main_credit = Math.ceil(cc_main_credit - Number(offset))
 						const new_compensate_CC_main = Math.ceil(compensate_CC_main + Number(offset))
 						const new_growth_a_tree_main = Math.floor(growth_a_tree_main + Number(new_compensate_CC_main) / 12) 
 						const newData_CCbank = {
