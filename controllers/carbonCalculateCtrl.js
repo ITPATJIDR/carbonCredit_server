@@ -187,7 +187,7 @@ const CarbonCalculate = {
 							if (err) {
 								res.status(200).json({ status: 400, message: "Purchase Failed" });
 							} else {
-								const preCreateCertificate = Template_1(fullname, Number(offset), new_tree)
+								const preCreateCertificate = Template_1(fullname, Number(new_coin), new_tree)
 								const printer = new pdfMake(fonts)
 								const pdfDoc = printer.createPdfKitDocument(preCreateCertificate)
 								const fileName = await "CC_" + genNumber()
